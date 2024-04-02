@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 
-interface Question {
+export interface Question {
   type: 'multiple' | 'boolean';
   difficulty: 'easy' | 'medium' | 'hard';
   category: string;
@@ -9,16 +9,18 @@ interface Question {
   incorrect_answers: string[];
 }
 
-interface QuizApiResponse {
+export interface QuestionsResponse {
   response_code: number;
   results: Question[];
 }
 
 
-type Status = "idle" | "fetching" | "ready";
+type Status = "idle" | "fetching" | "ready" | "error";
 
 interface QuizState {
-  gameStatus: Status
+  gameStatus: Status;
+  question: Question | null;
+  userAnswer: string | null;
 }
 
 interface IQuizContext {
@@ -26,17 +28,20 @@ interface IQuizContext {
   dispatch: React.Dispatch<QuizAction>;
 }
 
-type QuizAction = {
-  type: "setStatus";
-  payload: Status;
-}
+type QuizAction = 
+  { type: "setStatus" ; payload: Status } |
+  { type: "setQuestion" ; payload: Question } |
+  { type: "setUserAnswer" ; payload: string } 
+
 
 interface QuizProps {
   children: React.ReactElement;
 }
 
 const initialState : QuizState = {
-  gameStatus: "idle"
+  gameStatus: "idle",
+  question: null,
+  userAnswer: null,
 }
 
 const QuizContext = createContext<IQuizContext>({
@@ -60,6 +65,10 @@ export function useQuiz() {
 
 function QuizReducer(state: QuizState, action: QuizAction): QuizState {
   switch (action.type) {
+    case "setQuestion":
+      return {...state, question: action.payload};
+    case "setUserAnswer":
+      return {...state, userAnswer: action.payload};
     case "setStatus":
       return {...state, gameStatus: action.payload};
     default:
