@@ -4,7 +4,6 @@ Aplicação desenvolvida em React, utilizando uma API de perguntas e respostas c
 Utiliza também um CDN ([canvas-confetti](https://cdn.skypack.dev/canvas-confetti)) que exibe uma explosão de confetes. <br />
 
 
-## :camera_flash: Screenshot
 ![](https://github.com/luiizsilverio/my-quiz/blob/main/src/assets/my-quiz.png)
 
 
