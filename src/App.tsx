@@ -11,6 +11,7 @@ function App() {
 
   async function fetchQuestion() {
     dispatch({ type: "setStatus", payload: "fetching" });
+    dispatch({ type: "setUserAnswer", payload: null });
 
     try {
       const response = await fetch('http://opentdb.com/api.php?amount=1&category=18'); //&encode=url3986');
@@ -18,7 +19,6 @@ function App() {
 
       if (data.response_code === 0) {
         let question : Question = data.results[0];
-        console.log(question.question);
         
         let randomIndex = Math.round(Math.random() * question.incorrect_answers.length);
         
@@ -41,7 +41,7 @@ function App() {
     if (state.gameStatus == "idle") {
       fetchQuestion();
     }
-  }, [])
+  }, [state.gameStatus])
 
   return (
     <>
@@ -57,7 +57,6 @@ function App() {
           <>
             <Score />
             <Game /> 
-            <h2>Status: {state.gameStatus}</h2>
           </>
       }
     </>
